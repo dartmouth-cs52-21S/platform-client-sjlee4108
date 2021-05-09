@@ -37,7 +37,6 @@ class NewPost extends React.Component {
   }
 
   onClickSubmit() {
-    console.log(this.onCheckInput());
     if (this.onCheckInput()) {
       this.props.createPost({
         title: this.state.title,

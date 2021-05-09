@@ -24,7 +24,6 @@ class EditPost extends React.Component {
 
   componentDidMount() {
     this.props.fetchPost(this.props.match.params.postID, (d) => this.updateState(d));
-    console.log(this.props.current);
   }
 
   handleChange(e, type) {
