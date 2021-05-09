@@ -2,7 +2,7 @@
 
 *Lab for creating a front-end platform that uses redux and api calls. Instead of using coverUrl as images in blog format, I decided to use table format to display info that saves url a user is interested in. While it may sound similar to bookmarking, this platform allows users to take notes of the webpage and share it with other users.*
 
-[deployed url](http://url-if-deployed-here)
+[deployed url](https://epic-goldberg-48bbd2.netlify.app/)
 
 ## What Worked Well
 * Material-ui: great package with examples and descriptions. Some concepts were hard to fully understand in a short time such as styling etc.. Used examples from their webpage as part of my code. (DataTable)
