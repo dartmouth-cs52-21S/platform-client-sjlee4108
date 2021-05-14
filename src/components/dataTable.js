@@ -187,7 +187,6 @@ function DataTable(props) {
   const rows = [];
   if (props.data.length !== 0) {
     props.data.forEach((d) => {
-      console.log(d);
       const splitData = d.tags.split(',');
       if (!favCheck) {
         rows.push({
