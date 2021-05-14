@@ -3,7 +3,7 @@ import axios from 'axios';
 // const ROOT_URL = 'https://platform.cs52.me/api';
 // const API_KEY = '?key=S_Lee';
 // const ROOT_URL = 'http://localhost:9090/api';
-const ROOT_URL = 'https://lab5-platform-api.herokuapp.com/';
+const ROOT_URL = 'https://lab5-platform-api.herokuapp.com/api';
 const API_KEY = '';
 
 // keys for actiontypes
