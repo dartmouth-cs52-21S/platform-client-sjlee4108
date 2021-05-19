@@ -1,43 +1,33 @@
 import React from 'react';
 import '../style.scss';
 import {
-  BrowserRouter as Router, Route, NavLink, Switch,
+  BrowserRouter as Router, Route, Switch,
 } from 'react-router-dom';
-import NoteAddIcon from '@material-ui/icons/NoteAdd';
-import { IconButton } from '@material-ui/core';
 import Post from './post';
 import dataTable from './dataTable';
 import newPost from './newPost';
 import EditPost from './editPost';
+import LogIn from './LogIn';
+import SignUp from './SignUp';
+import PrivateRoute from './privateRoute';
+import Nav from './nav';
 
 const App = () => (
   <Router>
-    <div>
+    <div id="appContainer">
       <Nav />
       <Switch>
         <Route exact path="/" component={dataTable} />
-        <Route path="/posts/new" component={newPost} />
-        <Route path="/posts/:postID/edit" component={EditPost} />
+        <PrivateRoute path="/posts/new" component={newPost} />
+        <PrivateRoute path="/posts/:postID/edit" component={EditPost} />
         <Route path="/posts/:postID" component={Post} />
+        <Route path="/signin" component={LogIn} />
+        <Route path="/signup" component={SignUp} />
+
         <Route render={() => (<div>post not found </div>)} />
       </Switch>
     </div>
   </Router>
-);
-
-const Nav = () => (
-  <nav>
-    <ul>
-      <li><NavLink exact to="/">LinkShare</NavLink></li>
-      <li>
-        <IconButton>
-          <NavLink to="/posts/new">
-            <NoteAddIcon />
-          </NavLink>
-        </IconButton>
-      </li>
-    </ul>
-  </nav>
 );
 
 export default App;

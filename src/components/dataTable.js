@@ -188,13 +188,19 @@ function DataTable(props) {
   if (props.data.length !== 0) {
     props.data.forEach((d) => {
       const splitData = d.tags.split(',');
+
+      // eslint-disable-next-line no-empty
+      if (splitData[0] === 'true' && d.author.email !== props.email) {
+        return;
+      }
+
       if (!favCheck) {
         rows.push({
           name: d.title,
           tag: splitData[2],
-          owner: splitData[0],
+          owner: d.author ? d.author.email : null,
           link: d.coverUrl,
-          fav: splitData[1],
+          fav: splitData[0] === 'true',
           id: d.id,
           key: d.id,
         });
@@ -202,9 +208,9 @@ function DataTable(props) {
         rows.push({
           name: d.title,
           tag: splitData[2],
-          owner: splitData[0],
+          owner: d.author ? d.author.email : null,
           link: d.coverUrl,
-          fav: splitData[1],
+          fav: splitData[0] === 'true',
           id: d.id,
           key: d.id,
         });
@@ -220,11 +226,10 @@ function DataTable(props) {
 
   const handleClick = (event, row) => {
     let newTag = '';
-    if (row.fav === '1') {
-      newTag = `${row.owner},0,${row.tag}`;
-    } else {
-      newTag = `${row.owner},1,${row.tag}`;
+    if (!props.auth) {
+      return;
     }
+    newTag = `${!row.fav},0,${row.tag}`;
     props.updatePost({ tags: newTag, id: row.id }, true);
   };
 
@@ -274,7 +279,7 @@ function DataTable(props) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = row.fav === '1';
+                  const isItemSelected = row.fav;
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -335,6 +340,8 @@ function DataTable(props) {
 const mapStateToProps = (state) => (
   {
     data: state.posts.all,
+    email: state.auth.email,
+    auth: state.auth.authenticated,
   }
 );
 

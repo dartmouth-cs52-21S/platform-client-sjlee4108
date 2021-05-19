@@ -1,4 +1,6 @@
-import { withStyles, TextField, Button } from '@material-ui/core';
+import {
+  withStyles, TextField, Button, FormControlLabel, Switch,
+} from '@material-ui/core';
 import React from 'react';
 
 import { connect } from 'react-redux';
@@ -18,7 +20,7 @@ class NewPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '', tag: '', owner: '', content: '', link: '',
+      title: '', tag: '', content: '', link: '', private: false,
     };
   }
 
@@ -27,8 +29,6 @@ class NewPost extends React.Component {
       this.setState((prevState) => ({ ...prevState, title: e.target.value }));
     } else if (type === 'content') {
       this.setState((prevState) => ({ ...prevState, content: e.target.value }));
-    } else if (type === 'owner') {
-      this.setState((prevState) => ({ ...prevState, owner: e.target.value }));
     } else if (type === 'link') {
       this.setState((prevState) => ({ ...prevState, link: e.target.value }));
     } else if (type === 'tag') {
@@ -38,9 +38,10 @@ class NewPost extends React.Component {
 
   onClickSubmit() {
     if (this.onCheckInput()) {
+      console.log(this.state.private);
       this.props.createPost({
         title: this.state.title,
-        tags: `${this.state.owner},0,${this.state.tag}`,
+        tags: `${this.state.private},0,${this.state.tag}`,
         coverUrl: this.state.link,
         content: this.state.content,
       }, this.props.history);
@@ -49,7 +50,7 @@ class NewPost extends React.Component {
 
   onCheckInput() {
     return this.onCheckValidTag() && this.onCheckValidTitle()
-    && this.onCheckValidName() && this.isValidHttpUrl();
+    && this.isValidHttpUrl();
   }
 
   onCheckValidTag() {
@@ -61,13 +62,6 @@ class NewPost extends React.Component {
 
   onCheckValidTitle() {
     if (this.state.title.length < 3 || this.state.title.length > 30) {
-      return false;
-    }
-    return true;
-  }
-
-  onCheckValidName() {
-    if (this.state.owner.length < 3 || this.state.owner.length > 20) {
       return false;
     }
     return true;
@@ -115,16 +109,6 @@ class NewPost extends React.Component {
 
           />
           <TextField
-            id="owner_field"
-            label="Owner"
-            value={this.state.owner}
-            onChange={(e) => this.handleChange(e, 'owner')}
-            variant="filled"
-            error={this.state.owner !== '' && !this.onCheckValidName()}
-            helperText={this.state.owner !== '' && !this.onCheckValidName() ? 'Name must be between 3 to 20 characters' : null}
-
-          />
-          <TextField
             id="link_field"
             label="Link"
             value={this.state.link}
@@ -144,6 +128,15 @@ class NewPost extends React.Component {
             onChange={(e) => this.handleChange(e, 'content')}
             placeholder="Supports markdown!"
             variant="filled"
+          />
+
+          <FormControlLabel
+            control={(
+              <Switch checked={this.state.private}
+                onChange={(e) => this.setState({ private: e.target.checked })}
+              />
+            )}
+            label="Set as Private"
           />
 
         </div>

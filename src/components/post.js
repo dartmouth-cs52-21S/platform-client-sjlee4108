@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { connect } from 'react-redux';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink, Redirect, withRouter } from 'react-router-dom';
 
 import ReactMarkdown from 'react-markdown';
 import TrashIcon from '@material-ui/icons/DeleteForever';
@@ -16,24 +16,33 @@ const Post = (props) => {
 
   if (Object.entries(props.current).length !== 0) {
     const splitData = props.current.tags.split(',');
+    if (splitData[0] === 'true' && props.email !== props.current.author.email) {
+      return (<Redirect to="/" />);
+    }
 
     return (
       <div className="postContainer">
         <div className="postCard">
           <div className="titleContainer">
             <h1>{props.current.title}</h1>
-            <IconButton>
-              <NavLink to={`/posts/${props.current.id}/edit`}>
-                <EditIcon />
-              </NavLink>
-            </IconButton>
-            <IconButton onClick={() => props.deletePost(props.current.id, props.history)}>
-              <TrashIcon />
-            </IconButton>
+            {props.auth
+              ? (
+                <IconButton>
+                  <NavLink to={`/posts/${props.current.id}/edit`}>
+                    <EditIcon />
+                  </NavLink>
+                </IconButton>
+              ) : null}
+            {props.auth
+              ? (
+                <IconButton onClick={() => props.deletePost(props.current.id, props.history)}>
+                  <TrashIcon />
+                </IconButton>
+              ) : null}
           </div>
           <div className="tagnameContainer">
             <h4>{splitData[2]}</h4>
-            <h5>{`By. ${splitData[0]}`}</h5>
+            <h5>{props.current.author ? `By. ${props.current.author.email}` : null}</h5>
           </div>
           <ReactMarkdown>{props.current.content}</ReactMarkdown>
           <a href={props.current.coverUrl} target="_blank" rel="noreferrer">{props.current.coverUrl}</a>
@@ -48,6 +57,8 @@ const Post = (props) => {
 const mapStateToProps = (state) => (
   {
     current: state.posts.current,
+    auth: state.auth.authenticated,
+    email: state.auth.email,
   }
 );
 
