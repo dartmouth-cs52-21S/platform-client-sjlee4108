@@ -204,7 +204,7 @@ function DataTable(props) {
           id: d.id,
           key: d.id,
         });
-      } else if (splitData[1] === '1') {
+      } else if (splitData[0] === 'true') {
         rows.push({
           name: d.title,
           tag: splitData[2],
@@ -226,7 +226,7 @@ function DataTable(props) {
 
   const handleClick = (event, row) => {
     let newTag = '';
-    if (!props.auth) {
+    if (!props.auth || row.owner !== props.email) {
       return;
     }
     newTag = `${!row.fav},0,${row.tag}`;
@@ -257,7 +257,7 @@ function DataTable(props) {
       <div className="switchContainer">
         <FormControlLabel
           control={<Switch checked={favCheck} onChange={handleChangeFav} />}
-          label="Show Favorites"
+          label="Show Private"
         />
       </div>
       <Paper className={classes.paper}>

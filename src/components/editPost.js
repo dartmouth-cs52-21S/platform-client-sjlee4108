@@ -20,7 +20,7 @@ class EditPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '', tag: '', private: false, content: '', link: '',
+      title: '', tag: '', private: false, content: '', link: '', owner: '',
     };
   }
 
@@ -79,6 +79,7 @@ class EditPost extends React.Component {
       private: splitData[0] === 'true',
       link: d.coverUrl,
       content: d.content,
+      owner: d.author.email,
     });
   }
 
@@ -147,7 +148,11 @@ class EditPost extends React.Component {
           <FormControlLabel
             control={(
               <Switch checked={this.state.private}
-                onChange={(e) => this.setState({ private: e.target.checked })}
+                onChange={(e) => {
+                  if (!this.props.auth || this.state.owner !== this.props.email) {
+                    return;
+                  } this.setState({ private: e.target.checked });
+                }}
               />
             )}
             label="Set as Private"
@@ -161,6 +166,8 @@ class EditPost extends React.Component {
 
 const mapStateToProps = (state) => ({
   current: state.posts.current,
+  email: state.auth.email,
+  auth: state.auth.authenticated,
 });
 
 export default withRouter(
