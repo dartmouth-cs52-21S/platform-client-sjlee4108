@@ -109,7 +109,6 @@ export function signupUser({ email, password }, history) {
         history.push('/');
       })
       .catch((error) => {
-        console.log(error);
         dispatch(authError(`Sign Up Failed: ${error.response.data}`));
       });
   };

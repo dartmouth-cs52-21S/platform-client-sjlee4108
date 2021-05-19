@@ -38,7 +38,6 @@ class NewPost extends React.Component {
 
   onClickSubmit() {
     if (this.onCheckInput()) {
-      console.log(this.state.private);
       this.props.createPost({
         title: this.state.title,
         tags: `${this.state.private},0,${this.state.tag}`,

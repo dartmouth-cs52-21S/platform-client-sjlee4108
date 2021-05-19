@@ -21,7 +21,6 @@ const SignUp = (props) => {
   // eslint-disable-next-line react/static-property-placement
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [inputValidate, setInputValidate] = useState(false);
@@ -70,11 +69,10 @@ const SignUp = (props) => {
     return true;
   };
 
-  const onCheckValidName = () => name.length > 3;
-
-  const onCheckInput = () => onCheckValidPassword() && onCheckValidEmail() && onCheckValidName();
+  const onCheckInput = () => onCheckValidPassword() && onCheckValidEmail();
 
   const onClickSubmit = async () => {
+    // failed to work on error handling
     if (onCheckInput()) {
       try {
         setInputValidate(false);
@@ -125,18 +123,6 @@ const SignUp = (props) => {
             disabled={loading}
           />
 
-          <TextField
-            required
-            id="name_field"
-            label="Name"
-            value={name}
-            onChange={(e) => { setName(e.target.value); }}
-            variant="filled"
-            margin="dense"
-            error={inputValidate && !onCheckValidName()}
-            helperText={inputValidate && !onCheckValidName() ? 'Name must be longer than 3 characters' : null}
-            disabled={loading}
-          />
           <br />
           <Button disabled={loading} fullwidth="true" onClick={() => onClickSubmit()} variant="contained" color="primary">Sign In</Button>
 
